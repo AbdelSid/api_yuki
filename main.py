@@ -11,4 +11,4 @@ handler = Mangum(app)
 # Define a route
 @app.get("/")
 async def read_root():
-    return "Salut, on dirait que j'arrive bientôt"
+    return "Salut, on dirait que j'arrive bientooooooooot"
