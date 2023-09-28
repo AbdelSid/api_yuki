@@ -1,4 +1,4 @@
-﻿pip==
+﻿pip==23.2
 fastapi==0.98.0
 mangum==0.17.0
 uvicorn
