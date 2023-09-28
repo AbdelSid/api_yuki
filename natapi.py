@@ -1,7 +1,6 @@
 import cloudscraper
 import time
 
-import ast
 
 cookies = {
     "__session": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imluc18yTWtjQlhndjhpbEwxcGNDTnB3MXV5anF0azgiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwczovL25hdC5kZXYiLCJleHAiOjE2ODgwNzYxOTgsImlhdCI6MTY4ODA3NjEzOCwiaXNzIjoiaHR0cHM6Ly9jbGVyay5uYXQuZGV2IiwianRpIjoiZmFhOGEzM2NlNzJhZTg4NTlmMDciLCJuYmYiOjE2ODgwNzYxMjgsInNpZCI6InNlc3NfMlJ0UDlMQmhaTW5rNlRjSEV2Zng1Vk5NOGE5Iiwic3ViIjoidXNlcl8yTzA2SUVKVWM5cHBoQ29Qc1JWcGphWVNUSUgiLCJ1c2VyX2VtYWlsIjoiY2hldmFsaXVzMTBAZ21haWwuY29tIiwidXNlcl9maXJzdF9uYW1lIjoiRmxhbU5vaXJlIiwidXNlcl9pZCI6InVzZXJfMk8wNklFSlVjOXBwaENvUHNSVnBqYVlTVElIIiwidXNlcl9sYXN0X25hbWUiOm51bGx9.foBWMwzXW9J4UWxbnGA_TzvjemyUfRYXwHCBXx73uAazFFio4-dCxZjDzG65AJseEmC1pN6Oz3tvJnWidIP0LkCfBps1ZPvxaLHeda-3-FLkejZLHORhKH9FPYVCcwj7PcpKixl_GKtqTJMSY9Wj8bUnTAB9drgT_9yEQfDG-kz9cppRVjiXV5fneFmrYUO5etehXqsDa9oV3pTBjLQZ7-0v_9Eznc6WJddpK5qaBRnDWsT-lLsDMe0N9wz6a7pGvCe8lK9gSPovwGPDD0_yzDulh075NxmqIcykM9nOdp2ZrD3wfw-n2RpC82Nk1csrQfTU0YjR4D7lUkFOeffGig",
@@ -354,9 +353,10 @@ def chatIA(prompt):
         if 'token' in str(event):
             token = (str(event).split('"token": "')[1].split('"')[0])
             if token != "[INITIALIZING]" and token != "[COMPLETED]":
-                decoded_text = ast.literal_eval(f"'{token}'")
+                decoded_text = eval(f"'{token}'")
                 decoded_texts = bytes(decoded_text, 'utf-8').decode('unicode_escape')
                 token = decoded_texts
                 message = message + token
 
     return message
+
