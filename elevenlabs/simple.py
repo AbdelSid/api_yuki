@@ -43,6 +43,14 @@ def generate(
     stream_chunk_size: int = 2048,
 ) -> Union[bytes, Iterator[bytes]]:
 
+    with open("error.txt", "r") as f:
+        error = f.read()
+
+    text = "ENTER FIRST GENERATE"
+
+    with open("error.txt", "w") as f:
+        f.write(error + "\n" + str(text))
+
     if isinstance(voice, str):
         voice_str = voice
         # If voice is valid voice_id, use it
@@ -62,6 +70,13 @@ def generate(
     assert isinstance(model, Model)
 
     if stream:
+        with open("error.txt", "r") as f:
+            error = f.read()
+
+        text = "ENTER IN STREM"
+
+        with open("error.txt", "w") as f:
+            f.write(error + "\n" + str(text))
         if isinstance(text, str):
             return TTS.generate_stream(
                 text, voice, model, stream_chunk_size, api_key=api_key, latency=latency

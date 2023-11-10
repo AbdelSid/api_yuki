@@ -240,7 +240,12 @@ def test_audio():
         audio = "AUDIO TEST"
         return audio
     except Exception as e:
-        return "ERROR : " + str(e)
+        with open("error.txt", "r") as f:
+            error = f.read()
+
+            return "ERROR : " + error
+
+
 
 
 """

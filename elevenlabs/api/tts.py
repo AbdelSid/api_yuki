@@ -36,12 +36,29 @@ class TTS(API):
     def generate(
         text: str, voice: Voice, model: Model, api_key: Optional[str] = None
     ) -> bytes:
+        with open("error.txt", "r") as f:
+            error = f.read()
+
+        text = "ENTER TTS GENERATE"
+
+        with open("error.txt", "w") as f:
+            f.write(error + "\n" + str(text))
+
         url = f"{api_base_url_v1}/text-to-speech/{voice.voice_id}"
         data = dict(
             text=text,
             model_id=model.model_id,
             voice_settings=voice.settings.model_dump() if voice.settings else None,
         )  # type: ignore
+
+        with open("error.txt", "r") as f:
+            error = f.read()
+
+        text = "ATTEMPTING TO CALL API"
+
+        with open("error.txt", "w") as f:
+            f.write(error + "\n" + str(text))
+
         response = API.post(url, json=data, api_key=api_key)
         return response.content
 
