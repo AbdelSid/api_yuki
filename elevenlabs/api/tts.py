@@ -46,7 +46,7 @@ class TTS(API):
 
         url = f"{api_base_url_v1}/text-to-speech/{voice.voice_id}"
         data = dict(
-            text='this is test',
+            text=text,
             model_id=model.model_id,
             voice_settings=voice.settings.model_dump() if voice.settings else None,
         )  # type: ignore
