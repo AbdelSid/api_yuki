@@ -1,5 +1,8 @@
 from playsound import playsound
 
+from elevenlabs import set_api_key
+set_api_key("8517ffd8094ba4b297208707b9dc3c34")
+
 
 def dislpay_voice_list():
     from elevenlabs import voices, generate
@@ -13,12 +16,13 @@ def dislpay_voice_list():
 
 from elevenlabs import generate
 
-audio = generate(
-  text="Hey I am coming soon with a new voice",
-  voice="Bella",
-  model="eleven_multilingual_v2"
-)
+def audioTest():
 
-with open("audio.mp3", "wb") as f:
-    f.write(audio)
+    audio = generate(
+      text="Hey I am coming soon with a new voice",
+      voice="Bella",
+      model="eleven_multilingual_v2"
+    )
+
+    return audio
 

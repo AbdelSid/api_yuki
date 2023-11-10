@@ -223,6 +223,13 @@ def create_item(item):
 
 
     return response
+
+@app.get("/test-audio")
+def test_audio():
+    audio = voice.audioTest()
+    return audio
+
+
 """
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=8000)
