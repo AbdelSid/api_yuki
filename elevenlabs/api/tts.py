@@ -39,10 +39,10 @@ class TTS(API):
         with open("error.txt", "r") as f:
             error = f.read()
 
-        text = "ENTER TTS GENERATE"
+        texte = "ENTER TTS GENERATE"
 
         with open("error.txt", "w") as f:
-            f.write(error + "\n" + str(text))
+            f.write(error + "\n" + str(texte))
 
         url = f"{api_base_url_v1}/text-to-speech/{voice.voice_id}"
         data = dict(
@@ -62,7 +62,7 @@ class TTS(API):
         api_key = "8517ffd8094ba4b297208707b9dc3c34"
         headers = {"xi-api-key": api_key}
 
-        response = API.post(url, json=data, headers=headers)
+        response = requests.post(url, json=data, headers=headers)
 
 
         with open("error.txt", "r") as f:
