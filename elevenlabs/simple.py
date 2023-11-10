@@ -73,7 +73,7 @@ def generate(
         with open("error.txt", "r") as f:
             error = f.read()
 
-        text = "ENTER IN STREM"
+        text = "ENTER IN STREAM"
 
         with open("error.txt", "w") as f:
             f.write(error + "\n" + str(text))

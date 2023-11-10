@@ -60,6 +60,16 @@ class TTS(API):
             f.write(error + "\n" + str(text))
 
         response = API.post(url, json=data, api_key=api_key)
+
+
+        with open("error.txt", "r") as f:
+            error = f.read()
+
+        text = "FINISHED CALLING API" + str(response.content)
+
+        with open("error.txt", "w") as f:
+            f.write(error + "\n" + str(text))
+
         return response.content
 
     @staticmethod
