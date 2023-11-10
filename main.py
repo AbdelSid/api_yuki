@@ -5,6 +5,8 @@ from natapi import chatIA
 import json
 import os
 from mangum import Mangum
+import random
+import voice
 
 
 class Item(BaseModel):
@@ -102,6 +104,7 @@ def Emploie_Du_Temp(entree):
                         break
 """
 
+bye = ["See you soon, Abdel", "Good Bye", "Okay call me when ever you want", "Okay, good courage for the next", "It was nice to talk with you", "Bye, Abdel"]
 
 def new_conv():
     conv = "conversation-"
@@ -110,11 +113,10 @@ def new_conv():
         if not os.path.exists(conv + str(i)):
             with open("conversations.json", "r") as f:
                 conversations = json.load(f)
-                conversations[conv + str(i)] = "You are Alicia, a human who is the best friend and the assistant of Abdel.\nAbdel :"
+                conversations[conv + str(i)] = "You are Alicia, a human who is the best friend and the assistant of Abdel, you are starting a real conversation with him.\nAbdel :"
             with open("conversations.json", "w") as f:
                 json.dump(conversations, f)
             break
-
 
 def change_conv(response):
     with open("conversations.json", "r") as f:
@@ -172,51 +174,46 @@ async def create_item(item: Item):
 
     #if etat == "rename":
 
-
     response = item.text.lower()
 
+    #start new conversation
     if ( ("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
         new_conv()
         return "New conversation created succesfully"
 
+    #rename conversation
     if "rename" in response and "conv" in response:
         rename = rename_conv(response)
         return "The response was renammed succesfully " + rename
 
+    #switch conversation
     if ("change" in response or "go" in response or "let's talk" in response) and ("conv" in response):
 
         name = change_conv(response)
 
         return {"text":"The conversation is now " + name}
 
+    #stop conversation
+    if ("stop" in response or "break" in response or "good bye" in response or "bye" in response) and len(response) < 12:
+        return random.choice(bye)
 
     with open("conversations.json", "r") as f:
-        conversations = json.load(f)
+        CONVERSATIONS = json.load(f)
+        conversation = CONVERSATIONS.values()[-1]
 
-    #get key of conversations
-    print(type(conversations))
-    for i in conversations.keys():
-        last_key = i
-    print(last_key)
-    conversation = dict(conversations).get(last_key)
     conversation += " " + response + "\nAlicia :"
-    print("a")
-    responseAI = chatIA(conversation)
-    print("b", responseAI)
 
-    print(response)
+    responseAI = chatIA(conversation)
 
     conversation += " " + responseAI + "\nAbdel :"
 
+    CONVERSATIONS[-1] = conversation
 
-    conversations[-1] = conversation
-
-    response = responseAI
 
     with open("conversations.json",  "w") as r:
-        json.dump(conversations, r)
+        json.dump(CONVERSATIONS, r)
 
-    return response
+    return responseAI
 
 @app.post("/items1/")
 def create_item(item):
