@@ -236,12 +236,12 @@ def test_audio():
             voice="Bella",
             model="eleven_multilingual_v2"
         )
+        audio = str(audio)[0]
 
         return audio
     except Exception as e:
         with open("error.txt", "r") as f:
             error = f.read()
-
             return "ERROR : " + error
 
 
