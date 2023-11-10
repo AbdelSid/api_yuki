@@ -4,3 +4,4 @@ mangum==0.17.0
 uvicorn
 cloudscraper
 websockets
+pydub

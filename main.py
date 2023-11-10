@@ -8,6 +8,7 @@ from mangum import Mangum
 import random
 import voice
 import websockets
+from pydub import AudioSegment
 
 class Item(BaseModel):
     text: str
@@ -239,10 +240,11 @@ def test_audio():
 
         with open("audio.mp3", "wb") as f:
             f.write(audio)
-        with open("audio.mp3", encoding="utf-16") as f:
-            audio = f.read()
+
+        audio = AudioSegment.from_file('path_to_file.mp3', format='mp3')
 
         return audio
+
     except Exception as e:
         with open("error.txt", "r") as f:
             error = f.read()
