@@ -1,4 +1,4 @@
-from elevenlabs import set_api_key
+from elevenlabs import set_api_key, generate
 set_api_key("8517ffd8094ba4b297208707b9dc3c34")
 
 
@@ -10,9 +10,6 @@ def dislpay_voice_list():
     for i in voices:
         print("VOICE " + str(cpt) + " : " + str(i).split("name='")[1].split("'")[0])
         cpt += 1
-
-
-from elevenlabs import generate
 
 def audioTest():
 

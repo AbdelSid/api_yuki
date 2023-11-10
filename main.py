@@ -226,8 +226,11 @@ def create_item(item):
 
 @app.get("/test-audio")
 def test_audio():
-    audio = voice.audioTest()
-    return audio
+    try:
+        audio = voice.audioTest()
+        return audio
+    except Exception as e:
+        return "ERROR : " + str(e)
 
 
 """

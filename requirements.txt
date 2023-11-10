@@ -4,4 +4,4 @@ mangum==0.17.0
 uvicorn
 cloudscraper
 websockets
-
+pydantic==2.4.2

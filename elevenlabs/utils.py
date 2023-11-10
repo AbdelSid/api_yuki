@@ -11,11 +11,11 @@ def is_installed(lib_name: str) -> bool:
 
 
 def play(audio: bytes, notebook: bool = False, use_ffmpeg: bool = True) -> None:
-    if notebook:
+    """    if notebook:
         from IPython.display import Audio, display
 
-        display(Audio(audio, rate=44100, autoplay=True))
-    elif use_ffmpeg:
+        display(Audio(audio, rate=44100, autoplay=True))"""
+    if use_ffmpeg:
         if not is_installed("ffplay"):
             message = (
                 "ffplay from ffmpeg not found, necessary to play audio. "
