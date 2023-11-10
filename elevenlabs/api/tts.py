@@ -58,6 +58,8 @@ class TTS(API):
 
         with open("error.txt", "w") as f:
             f.write(error + "\n" + str(text))
+        
+        api_key = api_key or os.environ.get("ELEVEN_API_KEY")
 
         headers = {"xi-api-key": api_key}
 
