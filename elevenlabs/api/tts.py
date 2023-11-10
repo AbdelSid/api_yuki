@@ -58,6 +58,7 @@ class TTS(API):
 
         with open("error.txt", "w") as f:
             f.write(error + "\n" + str(text))
+
         headers = {"xi-api-key": api_key}
 
         response = requests.post(url, json=data, headers=headers)

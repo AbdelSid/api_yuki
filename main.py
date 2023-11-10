@@ -237,7 +237,6 @@ def test_audio():
             model="eleven_multilingual_v2"
         )
 
-        audio = "AUDIO TEST"
         return audio
     except Exception as e:
         with open("error.txt", "r") as f:
