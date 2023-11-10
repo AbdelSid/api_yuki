@@ -236,7 +236,11 @@ def test_audio():
             voice="Bella",
             model="eleven_multilingual_v2"
         )
-        audio = str(audio)[0]
+
+        with open("audio.mp3", "wb") as f:
+            f.write(audio)
+        with open("audio.mp3", "rb") as f:
+            audio = f.read()
 
         return audio
     except Exception as e:
