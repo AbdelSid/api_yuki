@@ -46,10 +46,10 @@ def generate(
     with open("error.txt", "r") as f:
         error = f.read()
 
-    text = "ENTER FIRST GENERATE"
+    texte = "ENTER FIRST GENERATE"
 
     with open("error.txt", "w") as f:
-        f.write(error + "\n" + str(text))
+        f.write(error + "\n" + str(texte))
 
     if isinstance(voice, str):
         voice_str = voice
