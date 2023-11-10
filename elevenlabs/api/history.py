@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import model_validator
+#from pydantic import model_validator
 
 from .base import API, Listable, api_base_url_v1
 from .voice import VoiceSettings
@@ -35,7 +35,7 @@ class HistoryItem(API):
     feedback: Optional[FeedbackItem] = None
     _audio: Optional[bytes] = None
 
-    @model_validator(mode="after")
+    """@model_validator(mode="after")
     def add_computed_fields(self):
         # Compute character count field
         change_from = self.character_count_change_from
@@ -44,7 +44,7 @@ class HistoryItem(API):
         # Compute datetime field
         self.date = datetime.utcfromtimestamp(self.date_unix)
         return self
-
+"""
     @classmethod
     def from_id(cls, history_item_id: str) -> HistoryItem:
         url = f"{api_base_url_v1}/history/{history_item_id}"
