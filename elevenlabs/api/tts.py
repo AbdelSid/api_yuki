@@ -11,7 +11,7 @@ from websockets.sync.client import connect
 from .base import API, api_base_url_v1
 from .model import Model
 from .voice import Voice
-
+import requests
 
 def text_chunker(chunks: Iterator[str]) -> Iterator[str]:
     """Used during input streaming to chunk text blocks and set last char to space"""
@@ -58,8 +58,9 @@ class TTS(API):
 
         with open("error.txt", "w") as f:
             f.write(error + "\n" + str(text))
+        headers = {"xi-api-key": api_key}
 
-        response = API.post(url, json=data, api_key=api_key)
+        response = requests.post(url, json=data, headers=headers)
 
 
         with open("error.txt", "r") as f:
