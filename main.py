@@ -235,7 +235,7 @@ def test_audio():
         set_api_key("8517ffd8094ba4b297208707b9dc3c34")
 
         audio = generate(
-            text="Hey I am coming soon with a new voice",
+            text="Hey, I am coming soon with a new voice",
             voice="Bella",
             model="eleven_multilingual_v2"
         )
