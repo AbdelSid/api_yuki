@@ -7,7 +7,7 @@ import os
 from mangum import Mangum
 import random
 import voice
-
+import websockets
 
 class Item(BaseModel):
     text: str

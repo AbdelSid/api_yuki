@@ -3,4 +3,5 @@ fastapi==0.98.0
 mangum==0.17.0
 uvicorn
 cloudscraper
+websockets
 
