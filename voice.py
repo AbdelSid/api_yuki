@@ -1,5 +1,3 @@
-from playsound import playsound
-
 from elevenlabs import set_api_key
 set_api_key("8517ffd8094ba4b297208707b9dc3c34")
 
