@@ -54,10 +54,10 @@ class TTS(API):
         with open("error.txt", "r") as f:
             error = f.read()
 
-        text = "ATTEMPTING TO CALL API"
+        texte = "ATTEMPTING TO CALL API"
 
         with open("error.txt", "w") as f:
-            f.write(error + "\n" + str(text))
+            f.write(error + "\n" + str(texte))
         
         api_key = "8517ffd8094ba4b297208707b9dc3c34"
         headers = {"xi-api-key": api_key}
@@ -73,7 +73,34 @@ class TTS(API):
         with open("error.txt", "w") as f:
             f.write(error + "\n" + str(text))
 
-        return response.content
+
+        
+        status_code = response.status_code
+
+        if status_code == 200:
+            return response.content
+
+        # Parse the error message and status
+        error = json.loads(response.text)
+        message, status = "", ""
+        if "detail" in error:
+            detail = error["detail"]
+            if isinstance(error, dict):
+                message = detail.get("message", "")
+                status = detail.get("status", "")
+        else:
+            message = str(error)
+            status = str(response.status_code)
+
+        # Raise the appropriate error
+        if status_code == 401:
+            if status == "quota_exceeded":
+                if api_key is None:
+                    raise UnauthenticatedRateLimitError(message)
+                else:
+                    raise RateLimitError(message)
+            elif status == "needs_authorization":
+                raise AuthorizationError(message)
 
     @staticmethod
     def generate_stream(
