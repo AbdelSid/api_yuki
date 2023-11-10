@@ -241,7 +241,7 @@ def test_audio():
         with open("audio.mp3", "wb") as f:
             f.write(audio)
 
-        audio = AudioSegment.from_file('path_to_file.mp3', format='mp3')
+        audio = AudioSegment.from_file('audio.mp3', format='mp3')
 
         return audio
 
