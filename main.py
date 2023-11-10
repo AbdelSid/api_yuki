@@ -228,6 +228,8 @@ def create_item(item):
 def test_audio():
     try:
         #audio = voice.audioTest()
+        from elevenlabs import set_api_key, generate
+        set_api_key("8517ffd8094ba4b297208707b9dc3c34")
 
         audio = "AUDIO TEST"
         return audio
