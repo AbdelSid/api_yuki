@@ -325,7 +325,7 @@ headers = {
         "Sec-Fetch-Site": "same-origin",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
     }
-def chatIA(prompt):
+def chatIAPlus(prompt):
     model = {"prompt": prompt,
                  "models": [
                      {"name":"openai:gpt-4",
@@ -360,3 +360,38 @@ def chatIA(prompt):
 
     return message
 
+
+def chatIA(prompt):
+    model = {"prompt": prompt,
+                 "models": [
+                     {"name":"openai:gpt-3.5-turbo-16k",
+                      "tag":"openai:gpt-3.5-turbo-16k",
+                      "capabilities":["chat"],
+                      "provider":"openai",
+                      "parameters":
+                          {"temperature":0.68,
+                           "contextLength":5844,
+                           "maximumLength":2347,
+                           "topP":1,
+                           "presencePenalty":0,
+                           "frequencyPenalty":0,
+                           "stopSequences":[],
+                           "numberOfSamples":1},
+                      "enabled":True,
+                      "selected":True}],
+                 "stream":True}
+
+
+    test = session.post("https://nat.dev/api/inference/text", json=model, cookies=cookies, headers=headers, stream=True)
+
+    message = ""
+    for event in event_stream(test):
+        if 'token' in str(event):
+            token = (str(event).split('"token": "')[1].split('"')[0])
+            if token != "[INITIALIZING]" and token != "[COMPLETED]":
+                decoded_text = eval(f"'{token}'")
+                decoded_texts = bytes(decoded_text, 'utf-8').decode('unicode_escape')
+                token = decoded_texts
+                message = message + token
+
+    return message

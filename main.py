@@ -437,7 +437,6 @@ async def create_item(item: Item):
     print(item.text)
 
     #if etat == "rename":
-
     response = item.text.lower()
 
     #start new conversation
@@ -464,20 +463,19 @@ async def create_item(item: Item):
     with open("conversations.json", "r") as f:
         CONVERSATIONS = json.load(f)
         conversation = CONVERSATIONS.values()[-1]
-
     conversation += " " + response + "\nAlicia :"
 
     responseAI = chatIA(conversation)
 
     conversation += " " + responseAI + "\nAbdel :"
-
     CONVERSATIONS[-1] = conversation
-
-
     with open("conversations.json",  "w") as r:
         json.dump(CONVERSATIONS, r)
 
-    return responseAI
+    voice.generateAudio(responseAI)
+
+    return FileResponse("audio.mp3", filename="audio.mp3")
+
 
 @app.post("/items1/")
 def create_item(item):
