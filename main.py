@@ -231,6 +231,12 @@ def test_audio():
         from elevenlabs import set_api_key, generate
         set_api_key("8517ffd8094ba4b297208707b9dc3c34")
 
+        audio = generate(
+            text="Hey I am coming soon with a new voice",
+            voice="Bella",
+            model="eleven_multilingual_v2"
+        )
+
         audio = "AUDIO TEST"
         return audio
     except Exception as e:
