@@ -239,7 +239,7 @@ def test_audio():
 
         with open("audio.mp3", "wb") as f:
             f.write(audio)
-        with open("audio.mp3", encoding="utf-8") as f:
+        with open("audio.mp3", encoding="utf-16") as f:
             audio = f.read()
 
         return audio
