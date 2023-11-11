@@ -242,6 +242,9 @@ async def create_item(item: Item):
         CONVERSATIONS = json.load(f)
         for c in CONVERSATIONS.values():
             conversation = c
+        #get key value
+        for k in CONVERSATIONS.keys():
+                key = k
 
     conversation += " " + response + "\nAlicia :"
 
@@ -249,7 +252,7 @@ async def create_item(item: Item):
 
     conversation += " " + responseAI + "\nAbdel :"
 
-    CONVERSATIONS[-1] = conversation
+    CONVERSATIONS[k] = conversation
     with open("conversations.json",  "w") as r:
         json.dump(CONVERSATIONS, r)
 
