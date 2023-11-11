@@ -203,10 +203,23 @@ async def create_item(item: Item):
         return FileResponse("audio.mp3", filename="audio.mp3")
 
     #stop conversation
-    if ("stop" in response or "break" in response or "good bye" in response or "bye" in response) and len(response) < 12:
-        voice.generateAudio(random.choice("bye"))
+    if ("stop" in response or "break" in response or "good bye" in response or "bye" in response) and len(response) < 16:
+        with open("conversations.json", "r") as f:
+            CONVERSATIONS = json.load(f)
+            for c in CONVERSATIONS.values():
+                conversation = c
 
-        return FileResponse("audio.mp3", filename="audio.mp3")
+        conversation += " " + response + "\nAlicia (Finish the conversation) :"
+
+        responseAI = chatIA(conversation)
+
+        conversation += " " + responseAI + "\nAbdel :"
+        CONVERSATIONS[-1] = conversation
+        with open("conversations.json", "w") as r:
+            json.dump(CONVERSATIONS, r)
+
+        voice.generateAudio(responseAI, "stop")
+        return FileResponse("stop.mp3", filename="stop.mp3")
 
     with open("conversations.json", "r") as f:
         CONVERSATIONS = json.load(f)

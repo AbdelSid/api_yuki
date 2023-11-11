@@ -21,7 +21,7 @@ def audioTest():
 
     return audio
 
-def generateAudio(text):
+def generateAudio(text, nameFile="audio"):
 
     audio = generate(
         text=text,
@@ -31,6 +31,6 @@ def generateAudio(text):
         )
     )
 
-    with open("audio.mp3", "wb") as f:
+    with open(f"{nameFile}.mp3", "wb") as f:
         f.write(audio)
 
