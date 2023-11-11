@@ -32,7 +32,7 @@ def generateAudio(text, nameFile="audio"):
         text=text,
         voice=Voice(
             voice_id='EXAVITQu4vr4xnSDxMaL',
-            voice_settings=VoiceSettings(stability=0.2, similarity_boost=0.8, style=0.8, use_speaker_boost=True),
+            voice_settings=VoiceSettings(stability=0.4, similarity_boost=0.8, style=0.8, use_speaker_boost=True),
             model=model
         )
     )
