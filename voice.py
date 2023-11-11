@@ -23,11 +23,17 @@ def audioTest():
 
 def generateAudio(text, nameFile="audio"):
 
+    if len(text) > 555:
+        model = "eleven_turbo_v2"
+    else:
+        model = "eleven_multilingual_v2"
+
     audio = generate(
         text=text,
         voice=Voice(
             voice_id='EXAVITQu4vr4xnSDxMaL',
-            voice_settings=VoiceSettings(stability=0.2, similarity_boost=0.65, style=0.9, use_speaker_boost=True)
+            voice_settings=VoiceSettings(stability=0.2, similarity_boost=0.8, style=0.8, use_speaker_boost=True),
+            model=model
         )
     )
 
