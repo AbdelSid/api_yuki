@@ -181,28 +181,38 @@ async def create_item(item: Item):
     #start new conversation
     if ( ("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
         new_conv()
-        return "New conversation created succesfully"
+        voice.generateAudio("New conversation created succesfully")
+
+        return FileResponse("audio.mp3", filename="audio.mp3")
 
     #rename conversation
     if "rename" in response and "conv" in response:
         rename = rename_conv(response)
-        return "The response was renammed succesfully " + rename
+        T = "The response was renammed succesfully " + rename
+        voice.generateAudio(T)
+
+        return FileResponse("audio.mp3", filename="audio.mp3")
 
     #switch conversation
     if ("change" in response or "go" in response or "let's talk" in response) and ("conv" in response):
 
         name = change_conv(response)
 
-        return {"text":"The conversation is now " + name}
+        T = "The conversation is now " + name
+        voice.generateAudio(T)
+        return FileResponse("audio.mp3", filename="audio.mp3")
 
     #stop conversation
     if ("stop" in response or "break" in response or "good bye" in response or "bye" in response) and len(response) < 12:
-        return random.choice(bye)
+        voice.generateAudio(random.choice("bye"))
+
+        return FileResponse("audio.mp3", filename="audio.mp3")
 
     with open("conversations.json", "r") as f:
         CONVERSATIONS = json.load(f)
         for c in CONVERSATIONS.values():
             conversation = c
+
     conversation += " " + response + "\nAlicia :"
 
     responseAI = chatIA(conversation)
