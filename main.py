@@ -221,7 +221,7 @@ async def create_item(item: Item):
             json.dump(CONVERSATIONS, r)
 
         voice.generateAudio(responseAI)
-        return FileResponse("endel.mp3", filename=f"endel {mod}.mp3")
+        return FileResponse("audio.mp3", filename=f"endel {mod}.mp3")
 
 
 
