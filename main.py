@@ -200,8 +200,8 @@ async def create_item(item: Item):
                 conversation = c
 
 
-        conversation += "Request :  " + response + " \n" + " Endel is an app giving good vibes using songs with AI, this app have 4 mods, Focus, Sleep, Move and Relax.\nWhat is the most adapted mod for the request, answer in ONE WORD ONLY. \nEndel Mod :"
-        responseAI = chatIA(conversation).lower()
+        conversation_endel = conversation + "Request :  " + response + " \n" + " Endel is an app giving good vibes using songs with AI, this app have 4 mods, Focus, Sleep, Move and Relax.\nWhat is the most adapted mod for the request, answer in ONE WORD ONLY. \nEndel Mod :"
+        responseAI = chatIA(conversation_endel).lower()
         mod = "relax"
         if "rel" in responseAI:
             mod = "Relax"
