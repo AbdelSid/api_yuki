@@ -186,8 +186,45 @@ async def create_item(item: Item):
         etat = json.load(f)
     print(item.text)
 
+
+
     #if etat == "rename":
+
+
     response = item.text.lower()
+    #Manage Endel
+    if ("endel" in response or "engle" in response or "endo" in response  or "endom" in response) :
+        with open("conversations.json", "r") as f:
+            CONVERSATIONS = json.load(f)
+            for c in CONVERSATIONS.values():
+                conversation = c
+
+
+        conversation += "Request :  " + response + " \n" + " Endel is an app giving good vibes using songs with AI, this app have 4 mods, Focus, Sleep, Move and Relax.\nWhat is the most adapted mod for the request, answer in ONE WORD ONLY. \nEndel Mod :"
+        responseAI = chatIA(conversation).lower()
+        mod = "relax"
+        if "rel" in responseAI:
+            mod = "Relax"
+        elif "mov" in responseAI:
+            mod = "Move"
+        elif "sle" in responseAI:
+            mod = "Sleep"
+        elif "foc" in responseAI:
+            mod = "Focus"
+
+        conversation += " " + response + "\nAlicia (You have now to manage Endel for Abdel for his productivity, Endel is an app giving good vibes using songs with AI and you are setting up the mod " + mod + " for Abdel) :"
+        responseAI = chatIA(conversation)
+
+        conversation += " " + responseAI + "\nAbdel :"
+        CONVERSATIONS[-1] = conversation
+        with open("conversations.json", "w") as r:
+            json.dump(CONVERSATIONS, r)
+
+        voice.generateAudio(responseAI, "stop")
+        return FileResponse("stop.mp3", filename=f"endel_{mod}.mp3")
+
+
+
 
     #start new conversation
     if ( ("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
