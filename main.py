@@ -212,7 +212,7 @@ async def create_item(item: Item):
         elif "foc" in responseAI:
             mod = "Focus"
 
-        conversation += " " + response + "\nAlicia (You have now to manage Endel for Abdel for his productivity, Endel is an app giving good vibes using songs with AI and you are setting up the mod " + mod + " for Abdel) :"
+        conversation += " " + response + "\nAlicia  (You have now to manage Endel for Abdel for his productivity, Endel is an app giving good vibes using songs with AI and you are setting up the mod " + mod + " for Abdel) :"
         responseAI = chatIA(conversation)
 
         conversation += " " + responseAI + "\nAbdel :"
@@ -220,8 +220,8 @@ async def create_item(item: Item):
         with open("conversations.json", "w") as r:
             json.dump(CONVERSATIONS, r)
 
-        voice.generateAudio(responseAI, "stop")
-        return FileResponse("stop.mp3", filename=f"endel_{mod}.mp3")
+        voice.generateAudio(responseAI)
+        return FileResponse("endel.mp3", filename=f"endel {mod}.mp3")
 
 
 
