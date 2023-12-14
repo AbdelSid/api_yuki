@@ -361,24 +361,26 @@ def chatIAPlus(prompt):
     return message
 
 
-def chatIA(prompt):
+def chatIA(prompt, model="gpt-3.5-turbo-16k"):
+    print("model : ", model)
+
     model = {"prompt": prompt,
                  "models": [
-                     {"name":"openai:gpt-3.5-turbo-16k",
-                      "tag":"openai:gpt-3.5-turbo-16k",
+                     {"name":f"openai:{model}",
+                      "tag":f"openai:{model}",
                       "capabilities":["chat"],
                       "provider":"openai",
                       "parameters":
-                          {"temperature":0.68,
+                          {"temperature":0.6,
                            "contextLength":5844,
                            "maximumLength":2347,
-                           "topP":1,
-                           "presencePenalty":0,
-                           "frequencyPenalty":0,
+                           "topP":  0.35,
+                               "presencePenalty":0.4,
+                                "frequencyPenalty":0.2,
                            "stopSequences":[],
                            "numberOfSamples":1},
                       "enabled":True,
-                      "selected":True}],
+                  "selected":True}],
                  "stream":True}
 
 
@@ -390,8 +392,11 @@ def chatIA(prompt):
             token = (str(event).split('"token": "')[1].split('"')[0])
             if token != "[INITIALIZING]" and token != "[COMPLETED]":
                 decoded_text = eval(f"'{token}'")
-                decoded_texts = bytes(decoded_text, 'utf-8').decode('unicode_escape')
-                token = decoded_texts
-                message = message + token
+                try:
+                    decoded_texts = bytes(decoded_text, 'utf-8').decode('unicode_escape')
+                    token = decoded_texts
+                    message = message + token
+                except:
+                    print("undecoded")
 
     return message

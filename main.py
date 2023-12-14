@@ -10,6 +10,8 @@ import voice
 import websockets
 from pydub import AudioSegment
 from fastapi.responses import FileResponse
+import notion
+
 
 
 class Item(BaseModel):
@@ -186,10 +188,7 @@ async def create_item(item: Item):
         etat = json.load(f)
     print(item.text)
 
-
-
     #if etat == "rename":
-
 
     response = item.text.lower()
     #Manage Endel
@@ -223,9 +222,6 @@ async def create_item(item: Item):
         voice.generateAudio(responseAI)
         return FileResponse("audio.mp3", filename=f"endel {mod}.mp3")
 
-
-
-
     #start new conversation
     if ( ("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
         new_conv()
@@ -249,6 +245,41 @@ async def create_item(item: Item):
         T = "The conversation is now " + name
         voice.generateAudio(T)
         return FileResponse("audio.mp3", filename="audio.mp3")
+
+    #go to Notion
+    if "notion" in response or "subtask" in response or ("notion" in response and "task" in response):
+
+        with open("conversations.json", "r") as f:
+            CONVERSATIONS = json.load(f)
+            for c in CONVERSATIONS.values():
+                conversation = c
+
+        subtask = notion.goDataBase(response)
+
+        prompt = f"""Question : {response} ?
+            Searching on the data base of task...
+
+            Properties of tasks : 
+            - Priority / meusure that refers to the level of importance or urgency assigned to it often determining the order in which tasks are tackled. High-priority tasks are usually completed first.
+            - Status / status of a task refers to the state of a task, such as not started, in progress, or completed.
+            - Date / date of a task refers to the date when a task has to be done.
+
+            potential data of tasks  (not filtered) : {subtask}
+
+            Find and order or filter hardly if you can (answer VERY SHORTLY and exactly)
+
+            Alicia answer:"""
+
+        responseAI = chatIA(conversation + " \n\n" + prompt)
+
+        conversation += f" result of search : {subtask} \n" + responseAI + "\nAbdel :"
+        CONVERSATIONS[-1] = conversation
+        with open("conversations.json", "w") as r:
+            json.dump(CONVERSATIONS, r)
+
+        voice.generateAudio(responseAI)
+        return FileResponse("audio.mp3", filename=f"audio.mp3")
+
 
     #stop conversation
     stop = False
