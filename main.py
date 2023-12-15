@@ -320,7 +320,7 @@ async def create_item(item: Item):
 
     conversation += " " + responseAI + "\nAbdel :"
 
-    CONVERSATIONS[k] = conversation
+    CONVERSATIONS[key] = conversation
     with open("conversations.json",  "w") as r:
         json.dump(CONVERSATIONS, r)
 
