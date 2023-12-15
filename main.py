@@ -247,7 +247,7 @@ async def create_item(item: Item):
         return FileResponse("audio.mp3", filename="audio.mp3")
 
     #go to Notion
-    if "notion" in response or "subtask" in response or ("notion" in response and "task" in response):
+    if "notion" in response or ("task" in response and "sub" in response):
 
         with open("conversations.json", "r") as f:
             CONVERSATIONS = json.load(f)
