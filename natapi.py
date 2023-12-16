@@ -1,10 +1,11 @@
 import cloudscraper
 import time
-
+import requests
 
 cookies = {
-    "__session": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imluc18yTWtjQlhndjhpbEwxcGNDTnB3MXV5anF0azgiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwczovL25hdC5kZXYiLCJleHAiOjE2ODgwNzYxOTgsImlhdCI6MTY4ODA3NjEzOCwiaXNzIjoiaHR0cHM6Ly9jbGVyay5uYXQuZGV2IiwianRpIjoiZmFhOGEzM2NlNzJhZTg4NTlmMDciLCJuYmYiOjE2ODgwNzYxMjgsInNpZCI6InNlc3NfMlJ0UDlMQmhaTW5rNlRjSEV2Zng1Vk5NOGE5Iiwic3ViIjoidXNlcl8yTzA2SUVKVWM5cHBoQ29Qc1JWcGphWVNUSUgiLCJ1c2VyX2VtYWlsIjoiY2hldmFsaXVzMTBAZ21haWwuY29tIiwidXNlcl9maXJzdF9uYW1lIjoiRmxhbU5vaXJlIiwidXNlcl9pZCI6InVzZXJfMk8wNklFSlVjOXBwaENvUHNSVnBqYVlTVElIIiwidXNlcl9sYXN0X25hbWUiOm51bGx9.foBWMwzXW9J4UWxbnGA_TzvjemyUfRYXwHCBXx73uAazFFio4-dCxZjDzG65AJseEmC1pN6Oz3tvJnWidIP0LkCfBps1ZPvxaLHeda-3-FLkejZLHORhKH9FPYVCcwj7PcpKixl_GKtqTJMSY9Wj8bUnTAB9drgT_9yEQfDG-kz9cppRVjiXV5fneFmrYUO5etehXqsDa9oV3pTBjLQZ7-0v_9Eznc6WJddpK5qaBRnDWsT-lLsDMe0N9wz6a7pGvCe8lK9gSPovwGPDD0_yzDulh075NxmqIcykM9nOdp2ZrD3wfw-n2RpC82Nk1csrQfTU0YjR4D7lUkFOeffGig",
-    "client_uat": "1688066251"}
+    "__session": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imluc18yTWtjQlhndjhpbEwxcGNDTnB3MXV5anF0azgiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwczovL25hdC5kZXYiLCJleHAiOjE3MDI3NTkyMTgsImlhdCI6MTcwMjc1OTE1OCwiaXNzIjoiaHR0cHM6Ly9jbGVyay5uYXQuZGV2IiwianRpIjoiNDllOGIyNGZmNTUyZjZlZThhYjIiLCJuYmYiOjE3MDI3NTkxNDgsInNpZCI6InNlc3NfMlpkallydGpJM3A3MHdUVDE3bGJ3aDhKSmpuIiwic3ViIjoidXNlcl8yTmtTWWxWVks2MzFvYTd2UHVDVkJOR0VuWUkiLCJ1c2VyX2VtYWlsIjoiY2hldmFsaXVzLmlwaG9uZUBnbWFpbC5jb20iLCJ1c2VyX2ZpcnN0X25hbWUiOiJBYmRhbGxhaCIsInVzZXJfaWQiOiJ1c2VyXzJOa1NZbFZWSzYzMW9hN3ZQdUNWQk5HRW5ZSSIsInVzZXJfbGFzdF9uYW1lIjoiU2lkIn0.gD5vO5B6lYhKV2H2KFRYvXU3dziv41TUXMDG9uxd_9nIyE1AIzdr1VcWZnpk9fQihDbB74x8YxWFtA1nUPcfhpKS7zpJedECFPTwgxkSrL92Atw_RgYY1skCU5EHfwtfpCt372QtxNbZK_HjWN3wlLSkz87qDV1xB10g5ob_FydQ26UIyYfAXrfTSOxAcB5b7ofIwMRRZb51cV2R9psQPCXPYDGWCYEVmfpM0xPUBNx7jBSeYfiAhVloIm72o-qHGV0UcllpYV23qDnIj4WgPZcopRQa_HdGSs2J6Y85qbuveewlXQEYoEVY6MT1tXus4IrFg-VHsOF0gIbEbEZiIQ",
+    "client_uat": "1702758900"}
+
 
 
 def event_stream(response):
@@ -325,6 +326,10 @@ headers = {
         "Sec-Fetch-Site": "same-origin",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
     }
+
+
+
+
 def chatIAPlus(prompt):
     model = {"prompt": prompt,
                  "models": [
@@ -362,7 +367,6 @@ def chatIAPlus(prompt):
 
 
 def chatIA(prompt, model="gpt-3.5-turbo-16k"):
-    print("model : ", model)
 
     model = {"prompt": prompt,
                  "models": [
@@ -372,8 +376,8 @@ def chatIA(prompt, model="gpt-3.5-turbo-16k"):
                       "provider":"openai",
                       "parameters":
                           {"temperature":0.6,
-                           "contextLength":5844,
-                           "maximumLength":2347,
+                           "contextLength":3000,
+                           "maximumLength":5000,
                            "topP":  0.35,
                                "presencePenalty":0.4,
                                 "frequencyPenalty":0.2,
@@ -398,5 +402,4 @@ def chatIA(prompt, model="gpt-3.5-turbo-16k"):
                     message = message + token
                 except:
                     print("undecoded")
-
     return message
