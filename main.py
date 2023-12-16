@@ -184,151 +184,152 @@ async def read_item(item_id: int, q: str = None):
 @app.post("/items/")
 async def create_item(item: Item):
 
-    with open("state.json") as f:
-        etat = json.load(f)
-    print(item.text)
+    try:
 
-    #if etat == "rename":
+        with open("state.json") as f:
+            etat = json.load(f)
+        print(item.text)
 
-    response = item.text.lower()
-    #Manage Endel
-    if ("endel" in response or "engle" in response or "endo" in response  or "endom" in response) :
+        #if etat == "rename":
+
+        response = item.text.lower()
+        #Manage Endel
+        if ("endel" in response or "engle" in response or "endo" in response  or "endom" in response) :
+            with open("conversations.json", "r") as f:
+                CONVERSATIONS = json.load(f)
+                for c in CONVERSATIONS.values():
+                    conversation = c
+
+
+            conversation_endel = conversation + "Request :  " + response + " \n" + " Endel is an app giving good vibes using songs with AI, this app have 4 mods, Focus, Sleep, Move and Relax.\nWhat is the most adapted mod for the request, answer in ONE WORD ONLY. \nEndel Mod :"
+            responseAI = chatIA(conversation_endel).lower()
+            mod = "relax"
+            if "rel" in responseAI:
+                mod = "Relax"
+            elif "mov" in responseAI:
+                mod = "Move"
+            elif "sle" in responseAI:
+                mod = "Sleep"
+            elif "foc" in responseAI:
+                mod = "Focus"
+
+            conversation += " " + response + "\nAlicia  (You have now to manage Endel for Abdel for his productivity, Endel is an app giving good vibes using songs with AI and you are setting up the mod " + mod + " for Abdel) :"
+            responseAI = chatIA(conversation)
+
+            conversation += " " + responseAI + "\nAbdel :"
+            CONVERSATIONS[-1] = conversation
+            with open("conversations.json", "w") as r:
+                json.dump(CONVERSATIONS, r)
+
+            voice.generateAudio(responseAI)
+            return FileResponse("audio.mp3", filename=f"endel {mod}.mp3")
+
+        #start new conversation
+        if (("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
+            new_conv()
+            voice.generateAudio("New conversation created succesfully")
+
+            return FileResponse("audio.mp3", filename="audio.mp3")
+
+        #rename conversation
+        if "rename" in response and "conv" in response:
+            rename = rename_conv(response)
+            T = "The response was renammed succesfully " + rename
+            voice.generateAudio(T)
+
+            return FileResponse("audio.mp3", filename="audio.mp3")
+
+        #switch conversation
+        if ("change" in response or "go" in response or "let's talk" in response) and ("conv" in response):
+
+            name = change_conv(response)
+
+            T = "The conversation is now " + name
+            voice.generateAudio(T)
+            return FileResponse("audio.mp3", filename="audio.mp3")
+
+        #go to Notion
+        if "notion" in response or ("task" in response and "sub" in response):
+
+            with open("conversations.json", "r") as f:
+                CONVERSATIONS = json.load(f)
+                for c in CONVERSATIONS.values():
+                    conversation = c
+
+            subtask = notion.goDataBase(response)
+
+            prompt = f"""Question : {response} ?
+                Searching on the data base of task...
+    
+                Properties of tasks : 
+                - Priority / meusure that refers to the level of importance or urgency assigned to it often determining the order in which tasks are tackled. High-priority tasks are usually completed first.
+                - Status / status of a task refers to the state of a task, such as not started, in progress, or completed.
+                - Date / date of a task refers to the date when a task has to be done.
+    
+                potential data of tasks  (not filtered) : {subtask}
+    
+                Find and order or filter hardly if you can (answer VERY SHORTLY and exactly)
+    
+                Alicia answer:"""
+
+            responseAI = chatIA(conversation + " \n\n" + prompt)
+
+            conversation += f" result of search : {subtask} \n" + responseAI + "\nAbdel :"
+            CONVERSATIONS[-1] = conversation
+            with open("conversations.json", "w") as r:
+                json.dump(CONVERSATIONS, r)
+
+            voice.generateAudio(responseAI)
+            return FileResponse("audio.mp3", filename=f"audio.mp3")
+
+
+        #stop conversation
+        stop = False
+        stopWords = ["stop", "break", "good bye", "bye", "shut"]
+        for i in stopWords:
+            if i in response:
+                stop = True
+
+        if stop and len(response) < 20:
+            with open("conversations.json", "r") as f:
+                CONVERSATIONS = json.load(f)
+                for c in CONVERSATIONS.values():
+                    conversation = c
+
+            conversation += " " + response + "\nAlicia (Finish the conversation) :"
+
+            responseAI = chatIA(conversation)
+
+            conversation += " " + responseAI + "\nAbdel :"
+            CONVERSATIONS[-1] = conversation
+            with open("conversations.json", "w") as r:
+                json.dump(CONVERSATIONS, r)
+
+            voice.generateAudio(responseAI, "stop")
+            return FileResponse("stop.mp3", filename="stop.mp3")
+
         with open("conversations.json", "r") as f:
             CONVERSATIONS = json.load(f)
-            for c in CONVERSATIONS.values():
+            for k, c in CONVERSATIONS.items():
                 conversation = c
-
-
-        conversation_endel = conversation + "Request :  " + response + " \n" + " Endel is an app giving good vibes using songs with AI, this app have 4 mods, Focus, Sleep, Move and Relax.\nWhat is the most adapted mod for the request, answer in ONE WORD ONLY. \nEndel Mod :"
-        responseAI = chatIA(conversation_endel).lower()
-        mod = "relax"
-        if "rel" in responseAI:
-            mod = "Relax"
-        elif "mov" in responseAI:
-            mod = "Move"
-        elif "sle" in responseAI:
-            mod = "Sleep"
-        elif "foc" in responseAI:
-            mod = "Focus"
-
-        conversation += " " + response + "\nAlicia  (You have now to manage Endel for Abdel for his productivity, Endel is an app giving good vibes using songs with AI and you are setting up the mod " + mod + " for Abdel) :"
-        responseAI = chatIA(conversation)
-
-        conversation += " " + responseAI + "\nAbdel :"
-        CONVERSATIONS[-1] = conversation
-        with open("conversations.json", "w") as r:
-            json.dump(CONVERSATIONS, r)
-
-        voice.generateAudio(responseAI)
-        return FileResponse("audio.mp3", filename=f"endel {mod}.mp3")
-
-    #start new conversation
-    if ( ("conv" in response) and ("new" in response) ) or ("hey alicia" in response):
-        new_conv()
-        voice.generateAudio("New conversation created succesfully")
-
-        return FileResponse("audio.mp3", filename="audio.mp3")
-
-    #rename conversation
-    if "rename" in response and "conv" in response:
-        rename = rename_conv(response)
-        T = "The response was renammed succesfully " + rename
-        voice.generateAudio(T)
-
-        return FileResponse("audio.mp3", filename="audio.mp3")
-
-    #switch conversation
-    if ("change" in response or "go" in response or "let's talk" in response) and ("conv" in response):
-
-        name = change_conv(response)
-
-        T = "The conversation is now " + name
-        voice.generateAudio(T)
-        return FileResponse("audio.mp3", filename="audio.mp3")
-
-    #go to Notion
-    if "notion" in response or ("task" in response and "sub" in response):
-
-        with open("conversations.json", "r") as f:
-            CONVERSATIONS = json.load(f)
-            for c in CONVERSATIONS.values():
-                conversation = c
-
-        subtask = notion.goDataBase(response)
-
-        prompt = f"""Question : {response} ?
-            Searching on the data base of task...
-
-            Properties of tasks : 
-            - Priority / meusure that refers to the level of importance or urgency assigned to it often determining the order in which tasks are tackled. High-priority tasks are usually completed first.
-            - Status / status of a task refers to the state of a task, such as not started, in progress, or completed.
-            - Date / date of a task refers to the date when a task has to be done.
-
-            potential data of tasks  (not filtered) : {subtask}
-
-            Find and order or filter hardly if you can (answer VERY SHORTLY and exactly)
-
-            Alicia answer:"""
-
-        responseAI = chatIA(conversation + " \n\n" + prompt)
-
-        conversation += f" result of search : {subtask} \n" + responseAI + "\nAbdel :"
-        CONVERSATIONS[-1] = conversation
-        with open("conversations.json", "w") as r:
-            json.dump(CONVERSATIONS, r)
-
-        voice.generateAudio(responseAI)
-        return FileResponse("audio.mp3", filename=f"audio.mp3")
-
-
-    #stop conversation
-    stop = False
-    stopWords = ["stop", "break", "good bye", "bye", "shut"]
-    for i in stopWords:
-        if i in response:
-            stop = True
-
-    if stop and len(response) < 20:
-        with open("conversations.json", "r") as f:
-            CONVERSATIONS = json.load(f)
-            for c in CONVERSATIONS.values():
-                conversation = c
-
-        conversation += " " + response + "\nAlicia (Finish the conversation) :"
-
-        responseAI = chatIA(conversation)
-
-        conversation += " " + responseAI + "\nAbdel :"
-        CONVERSATIONS[-1] = conversation
-        with open("conversations.json", "w") as r:
-            json.dump(CONVERSATIONS, r)
-
-        voice.generateAudio(responseAI, "stop")
-        return FileResponse("stop.mp3", filename="stop.mp3")
-
-    with open("conversations.json", "r") as f:
-        CONVERSATIONS = json.load(f)
-        for c in CONVERSATIONS.values():
-            conversation = c
-        #get key value
-        for k in CONVERSATIONS.keys():
                 key = k
 
-    conversation += " " + response + "\nAlicia :"
+        conversation += " " + response + "\nAlicia :"
 
-    responseAI = chatIA(conversation)
+        responseAI = chatIA(conversation)
 
-    conversation += " " + responseAI + "\nAbdel :"
+        conversation += " " + responseAI + "\nAbdel :"
 
-    CONVERSATIONS[key] = conversation
-    with open("conversations.json",  "w") as r:
-        json.dump(CONVERSATIONS, r)
+        CONVERSATIONS[key] = conversation
+        with open("conversations.json",  "w") as r:
+            json.dump(CONVERSATIONS, r)
 
-    voice.generateAudio(responseAI)
+        voice.generateAudio(responseAI)
 
-    return FileResponse("audio.mp3", filename="audio.mp3")
-
-
+        return FileResponse("audio.mp3", filename="audio.mp3")
+    except Exception as e:
+        with open("error.txt", "w") as f:
+            f.write(str(e))
 @app.post("/items1/")
 def create_item(item):
 

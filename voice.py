@@ -1,6 +1,6 @@
 from elevenlabs import set_api_key, generate, Voice, VoiceSettings
 set_api_key("8517ffd8094ba4b297208707b9dc3c34")
-
+set_api_key("1c50566023c708a7611405284a8ca330")
 
 def dislpay_voice_list():
     from elevenlabs import voices, generate
