@@ -328,7 +328,7 @@ async def create_item(item: Item):
 
         return FileResponse("audio.mp3", filename="audio.mp3")
     except Exception as e:
-        with open("error.txt", "w") as f:
+        with open("error2.txt", "w") as f:
             f.write(str(e))
 @app.post("/items1/")
 def create_item(item):
@@ -368,7 +368,7 @@ def test_audio():
 
     except Exception as e:
         pass
-        with open("error.txt", "r") as f:
+        with open("errorX.txt", "r") as f:
             error = f.read()
             return "ERROR : " + error
 
