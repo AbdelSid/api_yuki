@@ -94,7 +94,7 @@ class TTS(API):
         # Raise the appropriate error
         if status_code == 401:
             with open("error3.txt", "w") as f:
-                f.write(error)
+                f.write(response.text)
 
     @staticmethod
     def generate_stream(
