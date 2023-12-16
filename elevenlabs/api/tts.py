@@ -93,13 +93,8 @@ class TTS(API):
 
         # Raise the appropriate error
         if status_code == 401:
-            if status == "quota_exceeded":
-                if api_key is None:
-                    raise UnauthenticatedRateLimitError(message)
-                else:
-                    raise RateLimitError(message)
-            elif status == "needs_authorization":
-                raise AuthorizationError(message)
+            with open("error3.txt", "w") as f:
+                f.write(error)
 
     @staticmethod
     def generate_stream(
